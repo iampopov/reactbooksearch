@@ -6,11 +6,13 @@ import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn } from "../components/Form";
+import Search from "../components/SearchField";
 
 function Books() {
   // Setting our component's initial state
   const [books, setBooks] = useState([])
   const [formObject, setFormObject] = useState({})
+  const [search, setSearch] = useState({})
 
   // Load all books and store them with setBooks
   useEffect(() => {
@@ -60,6 +62,7 @@ function Books() {
           <Col size="md-6">
             <Jumbotron>
               <h1>What Books Should I Read?</h1>
+              <Search />
             </Jumbotron>
             <form>
               <Input
