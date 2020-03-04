@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import API from "../../utils/API"
+
+import API from "../../utils/API";
+import BookCard from "../card";
 
 function Search() {
 
@@ -7,12 +9,7 @@ const [books, setBooks] = useState({
   name: ""
 })
 
-const [result, setResult] = useState({
-  bookName: "",
-  author: "",
-  image: "",
-  synopsis: "" 
-})
+const [result, setResult] = useState([])
 
 useEffect(() => {
      
@@ -26,23 +23,10 @@ const handleInputChange = (e) => {
 const handleFormSubmit = (e) => {
   e.preventDefault()
   API.searchBook(books.name)
-  //console.log(books.name) //  {"": "holmes"}  
     .then(res => {
-      console.log(res.data.items[0].id);
-      // console.log(res.data.items.length);
-      
-      for (let i=0; i<res.data.items.length; i++) {
-      
-        //console.log(setResult);
-
-
-        
-        // console.log(res.data.items[i].volumeInfo.title);
-        
-      }
-      
-      // const searchRes = res.data.items.filter(item => item.volumeInfo.title)
-      // console.log(searchRes);
+      const searchRes = res.data.items.filter(item => item)
+      setResult(searchRes)
+      console.log(searchRes);
       
     })
     .catch(err => console.log(err))
@@ -56,6 +40,16 @@ const handleFormSubmit = (e) => {
     <button onClick={handleFormSubmit} style={{ float: "right", marginBottom: 10 }} className="btn btn-success">
     Search Author
     </button>
+    {result.length ? (
+        <div>
+        {result.map(item => (
+          <BookCard
+          key = {item.id}
+          cardTitle = {item.volumeInfo.title}
+          description = {item.volumeInfo.description} />
+        ))} 
+        </div>
+      ) : (<h3>Please wait while Google API renders results!</h3>)}
     </>
   );
 }
